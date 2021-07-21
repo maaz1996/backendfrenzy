@@ -2,10 +2,10 @@ const config = require('../config');
 const Sequelize = require('sequelize');
 const {sequelize} = require('../db/connection');
 
-const purchaseHistory = sequelize.define(
-  'purchaseHistory',
+const Menu = sequelize.define(
+  'Menu',
   {
-    purchase_id: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -14,23 +14,15 @@ const purchaseHistory = sequelize.define(
       }
     },
     dishName: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      
+        type: Sequelize.TEXT,
+        allowNull: false,
     },
-    restaurantName: {
-        type: Sequelize.STRING,
+    price: {
+        type: Sequelize.DECIMAL,
         allowNull: false,
         
       },
-    transactionAmount: {
-      type: Sequelize.DECIMAL,
-      allowNull: false,
-    },
-    transactionDate: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
+   
     
   },
   {
@@ -42,4 +34,4 @@ const purchaseHistory = sequelize.define(
   }
 );
 
-module.exports = purchaseHistory;
+module.exports = Menu;

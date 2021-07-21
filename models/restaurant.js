@@ -2,12 +2,13 @@ const config = require('../config');
 const Sequelize = require('sequelize');
 const {sequelize} = require('../db/connection');
 
-const User = sequelize.define(
-  'User',
+const Restaurant = sequelize.define(
+  'Restaurant',
   {
-    user_id: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
       validate: {
         isNumeric: true
       }
@@ -17,19 +18,24 @@ const User = sequelize.define(
       allowNull: false,
       
     },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    purchaseHistory: {
+    
+    menu: {
       type: Sequelize.JSON({
       type:Sequelize.INTEGER,
       allowNull: true,
-      references: { model: 'purchaseHistory', key: 'purchase_id' }
+      references: { model: 'Menu', key: 'id' }
 
       }),
       allowNull: false
     },
+    openingHours: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+    restaurantName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
     
   },
   {
@@ -41,4 +47,4 @@ const User = sequelize.define(
   }
 );
 
-module.exports = User;
+module.exports = Restaurant;
