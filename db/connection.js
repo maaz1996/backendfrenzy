@@ -9,7 +9,7 @@
 const Sequelize = require('sequelize');
 const config =require('../config/index')
 
-var connection = new Sequelize(
+const sequelize = new Sequelize(
     `${config['dbanme']}`,
     `${config['userid']}`,
     `${config['password']}`,
@@ -34,4 +34,4 @@ var connection = new Sequelize(
     }
   }
 );
-module.exports=connection
+module.exports={sequelize}
