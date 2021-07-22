@@ -27,10 +27,9 @@ app.get("/", (req, res) => {
     });
   });
 
-  
-//game routes
-// const eventRoute = require("./routes/index");
-// app.use("/api/v1", eventRoute);
+//routes
+const TaskRoutes = require("./routes");
+app.use("/api/v1", TaskRoutes);
 
 const port = config["port"]
 
