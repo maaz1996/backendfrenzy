@@ -2,7 +2,6 @@ const express =require( 'express');
 const {sequelize} =require ('./db/connection');
 const config = require("./config/index");
 
-
 const app = express();
 const db = require('./db/method');
 const { purchaseHistory } = require('./models');
@@ -29,7 +28,7 @@ app.get("/", (req, res) => {
   });
 
   
-// //game routes
+//game routes
 // const eventRoute = require("./routes/index");
 // app.use("/api/v1", eventRoute);
 
