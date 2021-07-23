@@ -37,15 +37,17 @@ module.exports = () => {
        userresult=await db.findByCondition({ user_id: payload.userid }, 'User')
        dishresult = await db.findByCondition({ dishName: payload.dish }, 'Menu')
        restaurantresult = await db.findByCondition({ restaurantName: payload.restaurant }, 'Restaurant')
-     
+     //check if user has balance to buy the dish
       if(userresult[0].cashBalance< dishresult[0].price){
         console.log("User doesn't have enough balance")
         resolve("error")
       }
+      // check if the restaurant has availability of that dish
       else if(!(restaurantresult[0].menu.includes(dishresult[0].id))){
         console.log("Restaurant doesn't contain the dish")
         resolve("error")
       }
+      //else perform the action of user puchasing the dish
       else{
         const purchasepayload={
           dishName:dishresult[0].dishName,
@@ -86,14 +88,21 @@ module.exports = () => {
         var resultrows= menu[1].rows
         var arr=[];
         resultrows.map(i=>arr.push(i.id))
-  
-        console.log(arr[0])
-        var rest=await db.findOneByCondition({ menu : {
-          $contains: `${arr[0]}`
-        }}, 'Restaurant')
-        //  await db.rawQuery(`SELECT * FROM ${config['schema']}."Restaurant" where (${config['schema']}."menu"#>'{browsers}') @> `${arr[0]}`) ;`)
-        console.log(rest)
-        resolve("error")
+        var rest=[]
+       arr.map(async(i)=>{
+        rest=await db.findOneByCondition({ menu : {
+          $contains: {i}
+        }}, 'Restaurant',["restaurantName"])
+        
+       })
+       var response=[]
+        for(let j=0;j<`${payload.y}`;j++){
+          response.push(rest)
+         resolve(response)
+        }
+        
+        
+       
       
     
     }
@@ -106,12 +115,14 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         console.log(payload.opentime)
-        const opentime = await db.rawQuery(`SELECT restaurantName FROM ${config['schema']}."Restaurant"
-        WHERE openingHours LIKE '${payload.opentime}%' `)
-        console.log(opentime)
-        
+        const rest_open = await db.rawQuery(`SELECT "restaurantName" FROM ${config['schema']}."Restaurant"
+        WHERE "openingHours" LIKE '${payload.opentime}%'`)
+        if(rest_open && rest_open.length){
+          resolve(rest_open)
+        }
+        else{
         resolve("error")
-      
+        }
     
     }
        catch (error) {
