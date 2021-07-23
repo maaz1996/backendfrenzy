@@ -1,5 +1,8 @@
 
 const db = require('../db/method');
+const config =require('../config')
+const { Op } = require('sequelize');
+const Sequelize = require('sequelize');
 module.exports = () => {
   
   const Search = (payload) => {
@@ -74,9 +77,53 @@ module.exports = () => {
       }
     });
   };
+  const topRestaurant = (payload) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const menu = await db.rawQuery(`SELECT * FROM ${config['schema']}."Menu"
+        WHERE price BETWEEN ${payload.pricestart} AND ${payload.priceend};`)
+        console.menu
+        var resultrows= menu[1].rows
+        var arr=[];
+        resultrows.map(i=>arr.push(i.id))
+  
+        console.log(arr[0])
+        var rest=await db.findOneByCondition({ menu : {
+          $contains: `${arr[0]}`
+        }}, 'Restaurant')
+        //  await db.rawQuery(`SELECT * FROM ${config['schema']}."Restaurant" where (${config['schema']}."menu"#>'{browsers}') @> `${arr[0]}`) ;`)
+        console.log(rest)
+        resolve("error")
+      
+    
+    }
+       catch (error) {
+        reject(error);
+      }
+    });
+  };
+  const openRestaurant = (payload) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log(payload.opentime)
+        const opentime = await db.rawQuery(`SELECT restaurantName FROM ${config['schema']}."Restaurant"
+        WHERE openingHours LIKE '${payload.opentime}%' `)
+        console.log(opentime)
+        
+        resolve("error")
+      
+    
+    }
+       catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   return {
     Search,
-    userPurchase
+    userPurchase,
+    topRestaurant,
+    openRestaurant
   };
 };
