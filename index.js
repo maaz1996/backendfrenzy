@@ -4,7 +4,7 @@ const config = require("./config/index");
 
 const app = express();
 const db = require('./db/method');
-const { purchaseHistory } = require('./models');
+
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({
